@@ -1,5 +1,5 @@
 <!-- put in ./www directory -->
-
+<!--html example-->
 <html>
  <head>
   <title>Bienvenido</title>
