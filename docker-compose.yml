@@ -1,0 +1,46 @@
+version: '2'
+services:
+  web:
+    image: "alterway/php:5.4-apache"
+    ports:
+     - "8080:80"
+    volumes:
+     - .:/var/www/html
+    environment:
+     PHP_php5enmod: 'memcached xdebug mysql mysqli pdo_mysql gd'
+     PHP__display_errors: 'On'
+     PHP__error_reporting: 'E_ALL'
+     PHP__xdebug.remote_enable: 'on'
+     PHP__xdebug.remote_autostart: 'on'
+     PHP__xdebug.remote_connect_back: 'off'
+     PHP__xdebug.remote_handler: 'dbgp'
+     PHP__xdebug.profiler_enable: '0'
+     PHP__xdebug.profiler_output_dir: '/var/www/html'
+     PHP__xdebug.remote_port: '9000'
+     XDEBUG_CONFIG: 'remote_host=172.18.0.1'
+     PHP_IDE_CONFIG: 'serverName=dockerized'
+     HTTPD_a2enmod:  'rewrite status expires'
+
+  db:
+    image: mysql/mysql-server:5.7
+    ports: 
+     - "3306:3306"
+    environment:
+     - MYSQL_USER=root
+     - MYSQL_PASSWORD=docker
+     - MYSQL_ROOT_PASSWORD=docker
+     - MYSQL_DATABASE=mi_app
+
+  phpmyadmin:
+   image: phpmyadmin/phpmyadmin
+   environment:
+     #PMA_ARBITRARY: 1
+     MYSQL_USER: root
+     MYSQL_PASSWORD: docker
+     MYSQL_ROOT_PASSWORD: docker
+   ports:
+          - 8081:80
+   links:
+          # for mysql container
+          - db:db
+#Hola mundob11
